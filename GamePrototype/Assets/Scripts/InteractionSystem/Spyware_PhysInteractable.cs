@@ -54,7 +54,7 @@ namespace Spyware
                     }
 
                     Vector3 velTarget = positionDelta / Time.fixedDeltaTime;
-                    rb.velocity = Vector3.MoveTowards(rb.velocity, velTarget, 10f) * Time.fixedDeltaTime * 130f;
+                    rb.velocity = Vector3.MoveTowards(rb.velocity, velTarget, 10f) * Time.fixedDeltaTime * 110f;
             }
         }
 

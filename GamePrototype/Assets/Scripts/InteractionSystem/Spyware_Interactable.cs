@@ -4,6 +4,7 @@ namespace Spyware
 {
     public class Spyware_Interactable : MonoBehaviour
     {
+        public InteractionStyle interactionStyle;
         [HideInInspector]
         public Spyware_Hand hand;
         [Tooltip("The Rotation And Position The Interactable Item Is Attached/Positioned To")]
@@ -13,8 +14,6 @@ namespace Spyware
 
         private bool isHovered;
         private bool isHeld;
-
-        public bool EnableGravityOnDetach;
 
         protected Collider[] colliders;
 

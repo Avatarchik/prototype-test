@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Valve.VR;
 
 namespace Spyware
 {
@@ -9,7 +10,7 @@ namespace Spyware
         public Rigidbody m_rb;
         public Transform cameraRig;
         public GameObject interactionSphere;
-        public InteractionStyle interactionStyle = InteractionStyle.Hold;
+        private Spyware_HandInputs Input;
 
         public HandState currentHandState = HandState.Empty;
         private Spyware_Interactable currentInteractableItem;
@@ -50,6 +51,11 @@ namespace Spyware
             }
         }
 
+        public void Awake()
+        {
+            trackedObj = GetComponent<SteamVR_TrackedObject>();
+        }
+
         public void ForceSetInteractable(Spyware_Interactable interactable)
         {
             if (CurrentInteractable != null)
@@ -74,61 +80,82 @@ namespace Spyware
             //currentHandState = HandState.Empty;
         }
 
-        public void Awake()
+        private void UpdateInputs()
         {
-            trackedObj = GetComponent<SteamVR_TrackedObject>();
+            Input.GripUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Grip);
+            Input.GripDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Grip);
+            Input.GripPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Grip);
+            Input.TriggerUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Trigger);
+            Input.TriggerDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
+            Input.TriggerPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Trigger);
+            Input.TriggerFloat = Controller.GetAxis(EVRButtonId.k_EButton_Axis1).x;
+            Input.MenuUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu);
+            Input.MenuDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu);
+            Input.MenuPress = Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu);
+            Input.TouchpadUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadTouchUp = Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadTouchDown = Controller.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadTouched = Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.TouchpadAxes = Controller.GetAxis(EVRButtonId.k_EButton_Axis0);
+
         }
 
-        public void FixedUpdate()
+        public void Update()
         {
-            Debug.Log(currentHandState);
-            if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+            if (Controller == null)
+                return;
+            if (CurrentInteractable == null && ClosestInteractable == null)
+                return;
+
+            if (ClosestInteractable != null || CurrentInteractable != null)
             {
-                SceneManager.LoadScene("Interactiontesting");
-            }
-            if (closestInteractableItem != null)
-            {
-                if (currentHandState == HandState.Empty && interactionStyle == InteractionStyle.Hold)
+
+                if (currentHandState == HandState.Empty)
                 {
-                    if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Grip) == true)
+                    if (Input.GripDown && ClosestInteractable != null && ClosestInteractable.interactionStyle == InteractionStyle.Hold)
                     {
                         CurrentInteractable = ClosestInteractable;
                         currentHandState = HandState.Interacting;
                         CurrentInteractable.BeginInteraction(this);
                     }
-                }
 
-                if (currentHandState == HandState.Empty && interactionStyle == InteractionStyle.Toggle)
-                {
-                    if (Controller.GetPress(SteamVR_Controller.ButtonMask.Grip) == true)
+                    if (Input.GripPress && ClosestInteractable != null && ClosestInteractable.interactionStyle == InteractionStyle.Toggle)
                     {
                         CurrentInteractable = ClosestInteractable;
                         currentHandState = HandState.Interacting;
                         CurrentInteractable.BeginInteraction(this);
                     }
+
+                    Controller.TriggerHapticPulse(150);
+
                 }
-                Controller.TriggerHapticPulse(200);
+                else
+                {
+                    if (Input.GripUp && CurrentInteractable != null && CurrentInteractable.interactionStyle == InteractionStyle.Hold)
+                    {
+                        CurrentInteractable.EndInteraction(this);
+                        currentHandState = HandState.Empty;
+                        CurrentInteractable = null;
+                    }
+
+                    if (Input.GripPress && CurrentInteractable.IsHeld && CurrentInteractable.interactionStyle == InteractionStyle.Toggle)
+                    {
+                        CurrentInteractable.EndInteraction(this);
+                        currentHandState = HandState.Empty;
+                        CurrentInteractable = null;
+                    }
+
+                    if (CurrentInteractable == null)
+                    {
+                        currentHandState = HandState.Empty;
+                    }
+                }
             }
 
-            if (currentHandState == HandState.Interacting && interactionStyle == InteractionStyle.Hold)
-            {
-                if (Controller.GetPressUp(SteamVR_Controller.ButtonMask.Grip) == true)
-                {
-                    CurrentInteractable.EndInteraction(this);
-                    currentHandState = HandState.Empty;
-                    CurrentInteractable = null;
-                }
-            }
+            UpdateInputs();
 
-            if (currentHandState == HandState.Interacting && interactionStyle == InteractionStyle.Toggle)
-            {
-                if (Controller.GetPress(SteamVR_Controller.ButtonMask.Grip) == true)
-                {
-                    CurrentInteractable.EndInteraction(this);
-                    currentHandState = HandState.Empty;
-                    CurrentInteractable = null;
-                }
-            }
         }
 
         private void Collider(Collider collider, bool isEnter)
@@ -174,12 +201,6 @@ namespace Spyware
             if (!(collider.gameObject.GetComponent<Spyware_Interactable>() != null) || !(ClosestInteractable == collider.GetComponent<Spyware_Interactable>()))
                 return;
             ClosestInteractable = null;
-        }
-
-        public enum InteractionStyle
-        {
-            Hold,
-            Toggle
         }
 
         public enum HandState
