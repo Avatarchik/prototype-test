@@ -23,9 +23,32 @@ namespace Spyware
             velocityEstimator.BeginEstimatingVelocity();
         }
 
+        protected virtual Vector3 GetHandPosition()
+        {
+            return hand.transform.position;
+        }
+
+        protected virtual Vector3 GetInteractablePosition()
+        {
+            Vector3 position = interactionPoint.transform.position;
+            return position;
+        }
+
+        protected virtual Quaternion GetHandRotation()
+        {
+            return hand.transform.rotation;
+        }
+
+        protected virtual Quaternion GetInteractableRotation()
+        {
+            Quaternion rotation = interactionPoint.transform.rotation;
+            return rotation;
+        }
+
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
+
             if (interactionPoint == null)
             {
                 Debug.LogError(this + "Needs An Interaction Point");
@@ -33,28 +56,30 @@ namespace Spyware
             }
             if (IsHeld == true && interactionPoint != null)
             {
-                Quaternion rotationDelta;
-                Vector3 positionDelta;
+                Vector3 handPosition = GetHandPosition();
+                Vector3 interactablePosition = GetInteractablePosition();
+                Quaternion handRotation = GetHandRotation();
+                Quaternion interactableRotation = GetInteractableRotation();
 
                 float angle;
                 Vector3 axis;
 
-                    rotationDelta = hand.transform.rotation * Quaternion.Inverse(interactionPoint.rotation);
-                    positionDelta = hand.transform.position - interactionPoint.position;
+                Vector3 positionDelta = handPosition - interactablePosition;
+                Quaternion rotationDelta = handRotation * Quaternion.Inverse(interactableRotation);
 
-                    rotationDelta.ToAngleAxis(out angle, out axis);
+                rotationDelta.ToAngleAxis(out angle, out axis);
 
-                    if (angle > 180)
-                        angle -= 360;
+                if (angle > 180)
+                    angle -= 360;
 
-                    if (angle != 0)
-                    {
-                        Vector3 angTarget = angle * axis;
-                        rb.angularVelocity = Vector3.MoveTowards(rb.angularVelocity, angTarget, 10f * (Time.fixedDeltaTime * 1000f));
-                    }
+                if (angle != 0)
+                {
+                    Vector3 angTarget = angle * axis;
+                    rb.angularVelocity = Vector3.MoveTowards(rb.angularVelocity, angTarget, 10f * (Time.fixedDeltaTime * 1000f));
+                }
 
-                    Vector3 velTarget = positionDelta / Time.fixedDeltaTime;
-                    rb.velocity = Vector3.MoveTowards(rb.velocity, velTarget, 10f) * Time.fixedDeltaTime * 110f;
+                Vector3 velTarget = positionDelta / Time.fixedDeltaTime;
+                rb.velocity = Vector3.MoveTowards(rb.velocity, velTarget, 10f) * Time.fixedDeltaTime * 110f;
             }
         }
 
@@ -70,7 +95,6 @@ namespace Spyware
         public override void EndInteraction(Spyware_Hand hand)
         {
             rb.useGravity = true;
-            //If this Dosnt Work Remove Line 40 And Try
             if (this.hand != null)
             {
                 rb.velocity = velocityEstimator.GetVelocityEstimate();

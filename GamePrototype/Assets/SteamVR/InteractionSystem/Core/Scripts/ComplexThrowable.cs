@@ -16,13 +16,14 @@ namespace Valve.VR.InteractionSystem
 	{
 		public enum AttachMode
 		{
+			FixedJoint,
 			Force,
 		}
 
 		public float attachForce = 800.0f;
 		public float attachForceDamper = 25.0f;
 
-		public AttachMode attachMode = AttachMode.Force;
+		public AttachMode attachMode = AttachMode.FixedJoint;
 
 		[EnumFlags]
 		public Hand.AttachmentFlags attachmentFlags = 0;
@@ -113,6 +114,16 @@ namespace Valve.VR.InteractionSystem
 			if ( holdingBody == null )
 				return;
 
+			// Create a fixed joint from the hand to the holding body
+			if ( attachMode == AttachMode.FixedJoint )
+			{
+				Rigidbody handRigidbody = Util.FindOrAddComponent<Rigidbody>( hand.gameObject );
+				handRigidbody.isKinematic = true;
+
+				FixedJoint handJoint = hand.gameObject.AddComponent<FixedJoint>();
+				handJoint.connectedBody = holdingBody;
+			}
+
 			// Don't let the hand interact with other things while it's holding us
 			hand.HoverLock( null );
 
@@ -143,6 +154,11 @@ namespace Valve.VR.InteractionSystem
 				// Allow the hand to do other things
 				holdingHands[i].HoverUnlock( null );
 
+				// Delete any existing joints from the hand
+				if ( attachMode == AttachMode.FixedJoint )
+				{
+					Destroy( holdingHands[i].GetComponent<FixedJoint>() );
+				}
 
 				Util.FastRemove( holdingHands, i );
 				Util.FastRemove( holdingBodies, i );

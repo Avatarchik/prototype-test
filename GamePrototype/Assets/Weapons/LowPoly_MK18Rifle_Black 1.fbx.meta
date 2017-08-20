@@ -42,6 +42,13 @@ ModelImporter:
     4300008: Trigger
     4300010: Charging Handle
     4300012: Body
+    6400000: Body
+    6400002: Charging Handle
+    6400004: FrontSight
+    6400006: Magazine
+    6400008: RearSight
+    6400010: Slide
+    6400012: Trigger
   materials:
     importMaterials: 1
     materialName: 0
@@ -69,7 +76,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.11
+    globalScale: 0.1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

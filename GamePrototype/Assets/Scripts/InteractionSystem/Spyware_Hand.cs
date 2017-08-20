@@ -10,9 +10,10 @@ namespace Spyware
         public Rigidbody m_rb;
         public Transform cameraRig;
         public GameObject interactionSphere;
-        private Spyware_HandInputs Input;
-
         public HandState currentHandState = HandState.Empty;
+        public Spyware_HandInputs Input;
+
+        private float timeSinceGripPress;
         private Spyware_Interactable currentInteractableItem;
         private SteamVR_TrackedObject trackedObj;
         private SteamVR_Controller.Device Controller
@@ -82,6 +83,8 @@ namespace Spyware
 
         private void UpdateInputs()
         {
+            if (Controller == null)
+                return;
             Input.GripUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Grip);
             Input.GripDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Grip);
             Input.GripPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Grip);
@@ -99,14 +102,11 @@ namespace Spyware
             Input.TouchpadTouchDown = Controller.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad);
             Input.TouchpadTouched = Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad);
             Input.TouchpadAxes = Controller.GetAxis(EVRButtonId.k_EButton_Axis0);
-
         }
 
         public void Update()
         {
             if (Controller == null)
-                return;
-            if (CurrentInteractable == null && ClosestInteractable == null)
                 return;
 
             if (ClosestInteractable != null || CurrentInteractable != null)
@@ -114,14 +114,14 @@ namespace Spyware
 
                 if (currentHandState == HandState.Empty)
                 {
-                    if (Input.GripDown && ClosestInteractable != null && ClosestInteractable.interactionStyle == InteractionStyle.Hold)
+                    if (Input.GripDown && ClosestInteractable.interactionStyle == InteractionStyle.Hold)
                     {
                         CurrentInteractable = ClosestInteractable;
                         currentHandState = HandState.Interacting;
                         CurrentInteractable.BeginInteraction(this);
                     }
 
-                    if (Input.GripPress && ClosestInteractable != null && ClosestInteractable.interactionStyle == InteractionStyle.Toggle)
+                    if (Input.TriggerDown && ClosestInteractable.interactionStyle == InteractionStyle.Toggle)
                     {
                         CurrentInteractable = ClosestInteractable;
                         currentHandState = HandState.Interacting;
@@ -131,31 +131,32 @@ namespace Spyware
                     Controller.TriggerHapticPulse(150);
 
                 }
-                else
+
+                else if (currentHandState == HandState.Interacting)
                 {
-                    if (Input.GripUp && CurrentInteractable != null && CurrentInteractable.interactionStyle == InteractionStyle.Hold)
+                    if (Input.GripUp && CurrentInteractable.interactionStyle == InteractionStyle.Hold)
                     {
                         CurrentInteractable.EndInteraction(this);
                         currentHandState = HandState.Empty;
                         CurrentInteractable = null;
                     }
 
-                    if (Input.GripPress && CurrentInteractable.IsHeld && CurrentInteractable.interactionStyle == InteractionStyle.Toggle)
+                    if (Input.GripDown && CurrentInteractable.interactionStyle == InteractionStyle.Toggle)
                     {
                         CurrentInteractable.EndInteraction(this);
                         currentHandState = HandState.Empty;
                         CurrentInteractable = null;
-                    }
-
-                    if (CurrentInteractable == null)
-                    {
-                        currentHandState = HandState.Empty;
                     }
                 }
+
+                UpdateInputs();
+
+                if (CurrentInteractable == null)
+                {
+                    currentHandState = HandState.Empty;
+                }
+
             }
-
-            UpdateInputs();
-
         }
 
         private void Collider(Collider collider, bool isEnter)
@@ -206,7 +207,8 @@ namespace Spyware
         public enum HandState
         {
             Empty,
-            Interacting
+            Interacting,
+            GripToggleInteracting
         }
     }
 }

@@ -7,14 +7,14 @@ namespace Spyware
         public InteractionStyle interactionStyle;
         [HideInInspector]
         public Spyware_Hand hand;
-        [Tooltip("The Rotation And Position The Interactable Item Is Attached/Positioned To")]
-        protected Transform attachPointTransform;
         public float EndInteractionDistance = 0.25f;
+
         public bool EndInteractionIfDistant = true;
 
         private bool isHovered;
         private bool isHeld;
 
+        protected Transform attachPointTransform;
         protected Collider[] colliders;
 
         public bool IsHovered
@@ -78,25 +78,17 @@ namespace Spyware
             colliders = GetComponentsInChildren<Collider>(true);
         }
 
-        public void UpdateGrabPointTransform()
-        {
-            if (hand == null)
-                return;
-            attachPointTransform.position = hand.transform.position;
-            attachPointTransform.rotation = hand.transform.rotation;
-        }
-
         public virtual void BeginInteraction(Spyware_Hand hand)
         {
-            if (IsHeld && this.hand != hand && this.hand != null)
-                this.hand.EndInteractionIfHeld(this);
+            if (IsHeld && this.hand != hand && hand != null)
+                hand.EndInteractionIfHeld(this);
+            if (attachPointTransform == null)
+                attachPointTransform = new GameObject("interpRot").transform;
+            attachPointTransform.SetParent(transform);
+            attachPointTransform.position = hand.transform.position;
+            attachPointTransform.rotation = hand.transform.rotation;
             IsHeld = true;
             this.hand = hand;
-            if (attachPointTransform == null)
-                attachPointTransform = new GameObject("attachPointTransform").transform;
-            attachPointTransform.SetParent(transform);
-            attachPointTransform.position = this.hand.transform.position;
-            attachPointTransform.rotation = this.hand.transform.rotation;
         }
 
         public virtual void UpdateInteraction(Spyware_Hand hand)
@@ -107,9 +99,8 @@ namespace Spyware
 
         public virtual void EndInteraction(Spyware_Hand hand)
         {
-            this.hand = null;
+            hand = null;
             IsHeld = false;
-            Destroy(attachPointTransform.gameObject);
         }
 
         public virtual void Test(Spyware_Hand hand)
@@ -119,7 +110,6 @@ namespace Spyware
 
         public virtual void ForceBreakInteraction()
         {
-            Spyware_Hand hand = this.hand;
             if (hand == null)
                 return;
             hand.EndInteractionIfHeld(this);
