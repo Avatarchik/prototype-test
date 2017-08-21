@@ -4,11 +4,29 @@ namespace Spyware
 {
     public class Spyware_PhysInteractable : Spyware_Interactable
     {
-        [Tooltip("If you have a specific point you'd like the object held at, create a transform there and set it to this variable")]
-        public Transform interactionPoint;
         public Spyware_VelocityEstimator velocityEstimator;
+        public bool IsSecondHeld;
+
         [HideInInspector]
         public Rigidbody rb { get; set; }
+
+        private Spyware_SecondGrip m_secondGrip;
+        private Spyware_SecondGrip savedGrip;
+
+        protected Quaternion quaternionZero = Quaternion.identity;
+
+        [HideInInspector]
+        public Spyware_SecondGrip SecondGrip
+        {
+            get
+            {
+                return m_secondGrip;
+            }
+            set
+            {
+                m_secondGrip = value;
+            }
+        }
 
         protected override void Awake()
         {
@@ -31,6 +49,8 @@ namespace Spyware
         protected virtual Vector3 GetInteractablePosition()
         {
             Vector3 position = interactionPoint.transform.position;
+            if (IsSecondHeld == true)
+                return attachPointTransform.position;
             return position;
         }
 
@@ -42,6 +62,8 @@ namespace Spyware
         protected virtual Quaternion GetInteractableRotation()
         {
             Quaternion rotation = interactionPoint.transform.rotation;
+            if (IsSecondHeld == true)
+                return attachPointTransform.rotation;
             return rotation;
         }
 
@@ -67,6 +89,17 @@ namespace Spyware
                 Vector3 positionDelta = handPosition - interactablePosition;
                 Quaternion rotationDelta = handRotation * Quaternion.Inverse(interactableRotation);
 
+                if (SecondGrip != null && SecondGrip.IsEnabled)
+                {
+                    Vector3 forward = transform.InverseTransformPoint(m_secondGrip.interactionPoint.position);
+                    forward.y = -forward.y;
+                    Vector3 vector3_1 = transform.TransformDirection(forward);
+                    Quaternion quaternion_1 = Quaternion.LookRotation((m_secondGrip.hand.transform.position + vector3_1 - hand.transform.position).normalized, Vector3.Cross(m_secondGrip.hand.transform.position - hand.transform.position, hand.transform.right)) * interactionPoint.localRotation;
+                    float t = Mathf.Min(Quaternion.Angle(quaternionZero, quaternion_1) / 2f, 1f);
+                    this.quaternionZero = Quaternion.Slerp(quaternionZero, quaternion_1, t);
+                    rotationDelta = quaternion_1 * Quaternion.Inverse(interactableRotation);
+                }
+
                 rotationDelta.ToAngleAxis(out angle, out axis);
 
                 if (angle > 180)
@@ -74,7 +107,7 @@ namespace Spyware
 
                 if (angle != 0)
                 {
-                    Vector3 angTarget = angle * axis;
+                    Vector3 angTarget = Time.fixedDeltaTime * angle * axis * 60f;
                     rb.angularVelocity = Vector3.MoveTowards(rb.angularVelocity, angTarget, 10f * (Time.fixedDeltaTime * 1000f));
                 }
 
@@ -92,6 +125,14 @@ namespace Spyware
             base.BeginInteraction(hand);
         }
 
+        public virtual void BeginInteractionSecondGrip(Spyware_Hand hand, Spyware_SecondGrip grip)
+        {
+            IsSecondHeld = true;
+            savedGrip = grip;
+            BeginInteraction(hand);
+            this.hand.ForceSetInteractable(this);
+        }
+
         public override void EndInteraction(Spyware_Hand hand)
         {
             rb.useGravity = true;
@@ -99,6 +140,11 @@ namespace Spyware
             {
                 rb.velocity = velocityEstimator.GetVelocityEstimate();
                 rb.angularVelocity = velocityEstimator.GetAngularVelocityEstimate();
+            }
+            else
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
             SetParent(null);
             base.EndInteraction(hand);

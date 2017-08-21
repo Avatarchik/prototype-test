@@ -1,16 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Spyware_SecondGrip : MonoBehaviour {
+namespace Spyware
+{
+    public class Spyware_SecondGrip : Spyware_Interactable
+    {
+        public Spyware_PhysInteractable mainObject;
+        public bool IsEnabled;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+        public override bool IsInteractable()
+        {
+            return !IsHeld && !mainObject.IsSecondHeld;
+        }
+
+        public override void BeginInteraction(Spyware_Hand hand)
+        {
+            if (!mainObject.IsHeld)
+            {
+                mainObject.BeginInteractionSecondGrip(hand, this);
+            }
+            else
+            {
+                base.BeginInteraction(hand);
+                if (IsEnabled)
+                    mainObject.SecondGrip = this;
+            }
+        }
+
+        public override void EndInteraction(Spyware_Hand hand)
+        {
+            base.EndInteraction(hand);
+            if (IsEnabled && mainObject.SecondGrip == this)
+                mainObject.SecondGrip = null;
+        }
+
+        public void SetFunctionality(bool b)
+        {
+            IsEnabled = !IsEnabled;
+            if (IsEnabled)
+            {
+                mainObject.SecondGrip = this;
+            }
+            else
+            {
+                if (!(mainObject.SecondGrip == this))
+                    return;
+                mainObject.SecondGrip = null;
+            }
+        }
+    }
 }

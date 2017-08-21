@@ -21,6 +21,7 @@ namespace Spyware
         public bool TouchpadTouchUp;
         public bool TouchpadTouchDown;
         public bool TouchpadTouched;
+        public bool ApplicationMenuPress;
         public Vector2 TouchpadAxes;
     }
 }

@@ -4,6 +4,8 @@ namespace Spyware
 {
     public class Spyware_Interactable : MonoBehaviour
     {
+        [Tooltip("If you have a specific point you'd like the object held at, create a transform there and set it to this variable")]
+        public Transform interactionPoint;
         public InteractionStyle interactionStyle;
         [HideInInspector]
         public Spyware_Hand hand;
@@ -83,12 +85,17 @@ namespace Spyware
             if (IsHeld && this.hand != hand && hand != null)
                 hand.EndInteractionIfHeld(this);
             if (attachPointTransform == null)
-                attachPointTransform = new GameObject("interpRot").transform;
+                attachPointTransform = new GameObject("AttachPointTransform").transform;
             attachPointTransform.SetParent(transform);
-            attachPointTransform.position = hand.transform.position;
-            attachPointTransform.rotation = hand.transform.rotation;
+            attachPointTransform.position = interactionPoint.position;
+            attachPointTransform.rotation = interactionPoint.rotation;
             IsHeld = true;
             this.hand = hand;
+        }
+
+        public void UpdateAttachPointTransform()
+        {
+
         }
 
         public virtual void UpdateInteraction(Spyware_Hand hand)
@@ -101,6 +108,7 @@ namespace Spyware
         {
             hand = null;
             IsHeld = false;
+            //Destroy(attachPointTransform.gameObject); Breaks Game If Just Second Grip Is Grabbed
         }
 
         public virtual void Test(Spyware_Hand hand)

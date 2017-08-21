@@ -6,7 +6,6 @@ namespace Spyware
 {
     public class Spyware_Hand : MonoBehaviour
     {
-
         public Rigidbody m_rb;
         public Transform cameraRig;
         public GameObject interactionSphere;
@@ -101,6 +100,7 @@ namespace Spyware
             Input.TouchpadTouchUp = Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Touchpad);
             Input.TouchpadTouchDown = Controller.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad);
             Input.TouchpadTouched = Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad);
+            Input.ApplicationMenuPress = Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu);
             Input.TouchpadAxes = Controller.GetAxis(EVRButtonId.k_EButton_Axis0);
         }
 
