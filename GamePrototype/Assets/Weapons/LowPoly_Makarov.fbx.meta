@@ -1,47 +1,37 @@
 fileFormatVersion: 2
-guid: ebbf84548b1a59440ac0a5a9b23b1663
-timeCreated: 1503349248
+guid: a440fbc8140d1a94c8111d336feb6320
+timeCreated: 1503640438
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
     100000: Body
-    100002: Charging Handle
-    100004: FrontSight
-    100006: //RootNode
-    100008: Magazine
-    100010: RearSight
-    100012: Slide
-    100014: Trigger
+    100002: Hammer
+    100004: //RootNode
+    100006: Magazine
+    100008: Slide
+    100010: Trigger
     400000: Body
-    400002: Charging Handle
-    400004: FrontSight
-    400006: //RootNode
-    400008: Magazine
-    400010: RearSight
-    400012: Slide
-    400014: Trigger
+    400002: Hammer
+    400004: //RootNode
+    400006: Magazine
+    400008: Slide
+    400010: Trigger
     2300000: Body
-    2300002: Charging Handle
-    2300004: FrontSight
-    2300006: Magazine
-    2300008: RearSight
-    2300010: Slide
-    2300012: Trigger
+    2300002: Hammer
+    2300004: Magazine
+    2300006: Slide
+    2300008: Trigger
     3300000: Body
-    3300002: Charging Handle
-    3300004: FrontSight
-    3300006: Magazine
-    3300008: RearSight
-    3300010: Slide
-    3300012: Trigger
-    4300000: RearSight
-    4300002: FrontSight
-    4300004: Magazine
-    4300006: Slide
-    4300008: Trigger
-    4300010: Charging Handle
-    4300012: Body
+    3300002: Hammer
+    3300004: Magazine
+    3300006: Slide
+    3300008: Trigger
+    4300000: Slide
+    4300002: Body
+    4300004: Trigger
+    4300006: Hammer
+    4300008: Magazine
   materials:
     importMaterials: 1
     materialName: 0
@@ -69,13 +59,13 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.033
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
