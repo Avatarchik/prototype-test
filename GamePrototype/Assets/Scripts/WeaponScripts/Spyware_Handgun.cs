@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Spyware_Handgun : MonoBehaviour {
+namespace Spyware
+{
+    public class Spyware_Handgun : Spyware_FireArm
+    {
+        public float slideMaxz;
+        public float slideMinz;
+        public Spyware_HandgunSlide Slide;
+        private AudioSource m_aud;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        protected override void Awake()
+        {
+            base.Awake();
+            m_aud = GetComponent<AudioSource>();
+        }
+
+        public override void UpdateInteraction(Spyware_Hand hand)
+        {
+            base.UpdateInteraction(hand);
+        }
+    }
 }

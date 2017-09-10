@@ -22,16 +22,13 @@ MonoBehaviour:
     RndSpread: 5
     RndSpreadRic: 7
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0
+      - time: 0
         value: 0.12499999
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 1
+      - time: 1
         value: 0.65625
         inSlope: 1.2574342
         outSlope: 1.2574342
@@ -46,22 +43,18 @@ MonoBehaviour:
     RndSpread: 6
     RndSpreadRic: 8
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0.011089668
+      - time: 0.011089668
         value: -0.0013567917
         inSlope: 0.020448085
         outSlope: 0.020448085
         tangentMode: 0
-      - serializedVersion: 2
-        time: 0.69718134
+      - time: 0.69718134
         value: 0.031206239
         inSlope: 0.047461633
         outSlope: 0.2071365
         tangentMode: 5
-      - serializedVersion: 2
-        time: 1.0024244
+      - time: 1.0024244
         value: 0.16824234
         inSlope: 0.92254037
         outSlope: 0.92254037
@@ -76,16 +69,13 @@ MonoBehaviour:
     RndSpread: 4
     RndSpreadRic: 7
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0.012271986
+      - time: 0.012271986
         value: -0.07605338
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 1.190929
+      - time: 1.190929
         value: 0.21481547
         inSlope: 0.39283344
         outSlope: 0.39283344
@@ -100,16 +90,13 @@ MonoBehaviour:
     RndSpread: 0
     RndSpreadRic: 0
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0
+      - time: 0
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 1
+      - time: 1
         value: 0.1
         inSlope: 0
         outSlope: 0
@@ -124,16 +111,13 @@ MonoBehaviour:
     RndSpread: 2
     RndSpreadRic: 5
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0
+      - time: 0
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 0.9984985
+      - time: 0.9984985
         value: 0.0044270605
         inSlope: 0
         outSlope: 0
@@ -148,16 +132,13 @@ MonoBehaviour:
     RndSpread: 1
     RndSpreadRic: 2
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: -0.0015015015
+      - time: -0.0015015015
         value: 0.049739596
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 0.99814737
+      - time: 0.99814737
         value: 0.41781247
         inSlope: 0
         outSlope: 0
@@ -172,16 +153,13 @@ MonoBehaviour:
     RndSpread: 4
     RndSpreadRic: 5
     RicochetPropability:
-      serializedVersion: 2
       m_Curve:
-      - serializedVersion: 2
-        time: 0
+      - time: 0
         value: 0.050520845
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - serializedVersion: 2
-        time: 0.997834
+      - time: 0.997834
         value: 0.2498897
         inSlope: 0
         outSlope: 0

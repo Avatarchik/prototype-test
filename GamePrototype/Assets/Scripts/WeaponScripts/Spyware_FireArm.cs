@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class Spyware_FireArm : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace Spyware
+{
+    public class Spyware_FireArm : Spyware_PhysInteractable
+    {
+        public Spyware_Magazine Magazine;
+    }
 }

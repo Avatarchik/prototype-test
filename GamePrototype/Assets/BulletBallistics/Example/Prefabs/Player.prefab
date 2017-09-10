@@ -3070,6 +3070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 5
   BulletsPerMag: 8
   StoredBullets: 0
@@ -3084,6 +3085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 5
   BulletsPerMag: 10
   StoredBullets: 0
@@ -3098,6 +3100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 1000
   BulletsPerMag: 1000
   StoredBullets: 0
@@ -3112,17 +3115,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: 0.0015117682
+    - time: 0.0015117682
       value: 0.02788052
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.99783903
+    - time: 0.99783903
       value: 0.797132
       inSlope: 2
       outSlope: 2
@@ -3146,10 +3147,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 0
-  basicWeaponHandle: {fileID: 0}
   WeaponCam: {fileID: 20000014180256038}
   MoveSpeed: 40
   TurnSpeed: 200
+  WeaponSpreadWalking: 2
+  Weapons:
+  - weapon: {fileID: 114000012976030122}
+    sound: {fileID: 82000011223017840}
+    particle: {fileID: 198000012361615312}
+    ScopePos: {fileID: 4000012426688564}
+    ReloadTime: 0.4
+    RecoilAmount: 0.8
+  - weapon: {fileID: 114000011810043612}
+    sound: {fileID: 82000012580811222}
+    particle: {fileID: 198000013663524374}
+    ScopePos: {fileID: 4000012045327884}
+    ReloadTime: 0.4
+    RecoilAmount: 0.9
+  - weapon: {fileID: 114000010678012798}
+    sound: {fileID: 82000011505810804}
+    particle: {fileID: 198000010490609534}
+    ScopePos: {fileID: 4000013453641470}
+    ReloadTime: 0.4
+    RecoilAmount: 0.5
+  - weapon: {fileID: 114000011225750334}
+    sound: {fileID: 82000011090378736}
+    particle: {fileID: 198000013000591094}
+    ScopePos: {fileID: 4000011177991184}
+    ReloadTime: 0.4
+    RecoilAmount: 0.3
+  - weapon: {fileID: 114000013247000028}
+    sound: {fileID: 82000010449770800}
+    particle: {fileID: 198000012866097956}
+    ScopePos: {fileID: 4000010518909574}
+    ReloadTime: 0.4
+    RecoilAmount: 1
+  - weapon: {fileID: 114000013372927268}
+    sound: {fileID: 82000013574477718}
+    particle: {fileID: 198000010745692200}
+    ScopePos: {fileID: 4000012271573028}
+    ReloadTime: 0.4
+    RecoilAmount: 0.8
+  - weapon: {fileID: 114000013406131350}
+    sound: {fileID: 82000010447185924}
+    particle: {fileID: 198000010301241406}
+    ScopePos: {fileID: 4000012886934816}
+    ReloadTime: 0.4
+    RecoilAmount: 0.05
+  currentWeapon: 0
   HandTrans: {fileID: 4000012319951994}
   relhandMovement: {x: 0, y: 0.08, z: -0.2}
   relHandRotEuler: {x: -2, y: 0.2, z: 0}
@@ -3186,6 +3231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 10
   BulletsPerMag: 15
   StoredBullets: 0
@@ -3200,17 +3246,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: -0.0030055123
+    - time: -0.0030055123
       value: 1.1178436
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.997821
+    - time: 0.997821
       value: 2.2135136
       inSlope: 2
       outSlope: 2
@@ -3233,17 +3277,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: -0.0030077684
+    - time: -0.0030077684
       value: 0.09987385
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.9978255
+    - time: 0.9978255
       value: 1.52056
       inSlope: 2
       outSlope: 2
@@ -3269,13 +3311,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000013302365316}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 85
-  MaxBulletSpeed: 550
+  Speed: 930
   randomSpeedOffset: 10
-  BulletMass: 0.0065
+  Mass: 0.00343
   Diameter: 0.00545
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3317,6 +3357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 10
   BulletsPerMag: 50
   StoredBullets: 0
@@ -3331,17 +3372,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: -0.0030055116
+    - time: -0.0030055116
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.99373835
+    - time: 0.99373835
       value: 1.7188361
       inSlope: 2
       outSlope: 2
@@ -3364,17 +3403,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: 0.0045082686
+    - time: 0.0045082686
       value: 1.2248713
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 1.0008355
+    - time: 1.0008355
       value: 4.56651
       inSlope: 2
       outSlope: 2
@@ -3420,13 +3457,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000012422352846}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 20
-  MaxBulletSpeed: 550
+  Speed: 250
   randomSpeedOffset: 80
-  BulletMass: 0.0065
+  Mass: 0.004
   Diameter: 0.008
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3449,13 +3484,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000012517029696}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 45
-  MaxBulletSpeed: 550
+  Speed: 320
   randomSpeedOffset: 10
-  BulletMass: 0.0065
+  Mass: 0.0096
   Diameter: 0.00785
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3478,13 +3511,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000013937788876}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 150
-  MaxBulletSpeed: 550
+  Speed: 1200
   randomSpeedOffset: 10
-  BulletMass: 0.0065
+  Mass: 0.02
   Diameter: 0.008
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3506,17 +3537,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: -0.004512781
+    - time: -0.004512781
       value: 0.08807477
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.9978255
+    - time: 0.9978255
       value: 1.6750929
       inSlope: 2
       outSlope: 2
@@ -3582,13 +3611,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000013402586332}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 80
-  MaxBulletSpeed: 550
+  Speed: 1000
   randomSpeedOffset: 5
-  BulletMass: 0.0065
+  Mass: 0.00395
   Diameter: 0.00556
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3653,13 +3680,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000014140553372}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 25
-  MaxBulletSpeed: 550
+  Speed: 400
   randomSpeedOffset: 10
-  BulletMass: 0.0065
+  Mass: 0.005
   Diameter: 0.00903
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3681,17 +3706,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463e7e09b3a35dd4cae49b6e9845f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpread: 0
   SpreadAngleCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
-      time: 0.0015027561
+    - time: 0.0015027561
       value: 0.24973103
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 1.002336
+    - time: 1.002336
       value: 2.6217113
       inSlope: 2
       outSlope: 2
@@ -3714,6 +3737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 10
   BulletsPerMag: 30
   StoredBullets: 0
@@ -3731,13 +3755,11 @@ MonoBehaviour:
   VisualSpawnPoint: {fileID: 4000012752961788}
   PhysicalBulletSpawnPoint: {fileID: 4000013382955628}
   LifeTimeOfBullets: 4
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 4294967263
+  HitMask: {}
   MuzzleDamage: 50
-  MaxBulletSpeed: 550
+  Speed: 1000
   randomSpeedOffset: 10
-  BulletMass: 0.0065
+  Mass: 0.01
   Diameter: 0.008
   DragCoefficient: 0.5
   BulletPref: {fileID: 433382, guid: 69ca6c5805888df419446062d856b94d, type: 2}
@@ -3760,6 +3782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c4d3235818e034585eed65b9cccf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentBulletAmount: 0
   MagCount: 10
   BulletsPerMag: 50
   StoredBullets: 0

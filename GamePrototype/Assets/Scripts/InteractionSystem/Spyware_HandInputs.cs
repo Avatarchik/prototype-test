@@ -15,13 +15,13 @@ namespace Spyware
         public bool MenuUp;
         public bool MenuDown;
         public bool MenuPress;
-        public bool TouchpadUp;
-        public bool TouchpadDown;
-        public bool TouchpadPress;
-        public bool TouchpadTouchUp;
-        public bool TouchpadTouchDown;
-        public bool TouchpadTouched;
+        public bool TouchPadUp;
+        public bool TouchPadDown;
+        public bool TouchPadPress;
+        public bool TouchPadTouchUp;
+        public bool TouchPadTouchDown;
+        public bool TouchPadTouched;
         public bool ApplicationMenuPress;
-        public Vector2 TouchpadAxes;
+        public Vector2 TouchPadAxes;
     }
 }

@@ -55,9 +55,7 @@ public class DefaultImpactObject : ImpactObject {
 
         if(deactivate != null)
         {
-            deactivate.instanceOf = data.impactObject.gameObject;
-            
-            deactivate.Invoke("Deactivate", Time);
+            deactivate.Deactivate(Time, data.impactObject.gameObject);
         }
 
     }
