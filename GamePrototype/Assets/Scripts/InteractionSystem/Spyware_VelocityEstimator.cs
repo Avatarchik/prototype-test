@@ -18,8 +18,6 @@ namespace Spyware
         private Vector3[] velocitySamples;
         private Vector3[] angularVelocitySamples;
 
-
-        //-------------------------------------------------
         public void BeginEstimatingVelocity()
         {
             FinishEstimatingVelocity();
@@ -27,19 +25,16 @@ namespace Spyware
             routine = StartCoroutine(EstimateVelocityCoroutine());
         }
 
-
-        //-------------------------------------------------
         public void FinishEstimatingVelocity()
         {
             if (routine != null)
             {
                 StopCoroutine(routine);
                 routine = null;
+                sampleCount = 0;
             }
         }
 
-
-        //-------------------------------------------------
         public Vector3 GetVelocityEstimate()
         {
             // Compute average velocity
@@ -76,29 +71,6 @@ namespace Spyware
             return angularVelocity;
         }
 
-
-        //-------------------------------------------------
-        public Vector3 GetAccelerationEstimate()
-        {
-            Vector3 average = Vector3.zero;
-            for (int i = 2 + sampleCount - velocitySamples.Length; i < sampleCount; i++)
-            {
-                if (i < 2)
-                    continue;
-
-                int first = i - 2;
-                int second = i - 1;
-
-                Vector3 v1 = velocitySamples[first % velocitySamples.Length];
-                Vector3 v2 = velocitySamples[second % velocitySamples.Length];
-                average += v2 - v1;
-            }
-            average *= (1.0f / Time.deltaTime);
-            return average;
-        }
-
-
-        //-------------------------------------------------
         void Awake()
         {
             velocitySamples = new Vector3[velocityAverageFrames];
@@ -110,8 +82,6 @@ namespace Spyware
             }
         }
 
-
-        //-------------------------------------------------
         private IEnumerator EstimateVelocityCoroutine()
         {
             sampleCount = 0;

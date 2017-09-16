@@ -12,6 +12,7 @@ namespace Spyware
         protected float triggerCooldown = 0.5f;
 
         public bool EndInteractionIfDistant = true;
+        public bool IsSimpleInteract;
 
         [HideInInspector]
         public bool LastTimeTriggerWasPressed;
@@ -70,12 +71,10 @@ namespace Spyware
 
         protected virtual void OnHoverEnd()
         {
-
         }
 
         protected virtual void OnHoverStay()
         {
-
         }
 
         protected virtual void Awake()
@@ -89,6 +88,8 @@ namespace Spyware
 
         public virtual void BeginInteraction(Spyware_Hand hand)
         {
+            if (this.IsHeld && (Object)this.currenthand != (Object)hand && (Object)this.currenthand != (Object)null)
+                this.currenthand.EndInteractionIfHeld(this);
             if (attachPointTransform == null)
                 attachPointTransform = new GameObject("AttachPointTransform").transform;
             attachPointTransform.SetParent(hand.transform);
@@ -114,10 +115,10 @@ namespace Spyware
         {
             hand = null;
             IsHeld = false;
-            if (attachPointTransform != null)
-            {
-                Destroy(attachPointTransform.gameObject);
-            }
+        }
+
+        public virtual void SimpleInteraction(Spyware_Hand hand)
+        {
         }
 
         public virtual void Test(Spyware_Hand hand)
@@ -151,7 +152,6 @@ namespace Spyware
                 return;
             currenthand.EndInteractionIfHeld(this);
             EndInteraction(currenthand);
-            currenthand.currentHandState = Spyware_Hand.HandState.Empty;
         }
 
         public void OnDestroy()

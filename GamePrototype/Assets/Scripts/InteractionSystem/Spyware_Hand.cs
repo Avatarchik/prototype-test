@@ -10,30 +10,30 @@ namespace Spyware
         public Transform cameraRig;
         public GameObject interactionSphere;
         public Transform interactionSphereCenter;
-        public HandState currentHandState = HandState.Empty;
         public Spyware_HandInputs Input;
         public Spyware_Hand otherHand;
 
-        private float timeSinceGripPress;
-        private Spyware_Interactable currentInteractableItem;
+        private HandState currentHandState;
+        private HandMode currentHandMode;
+        private Spyware_Interactable currentInteractable;
         private SteamVR_TrackedObject trackedObj;
         private SteamVR_Controller.Device Controller
         {
             get { return SteamVR_Controller.Input((int)trackedObj.index); }
         }
 
-        Spyware_Interactable closestInteractableItem;
+        Spyware_Interactable closestInteractable;
 
         public Spyware_Interactable ClosestInteractable
         {
             get
             {
-                return closestInteractableItem;
+                return closestInteractable;
             }
             set
             {
-                closestInteractableItem = value;
-                if (closestInteractableItem == null)
+                closestInteractable = value;
+                if (closestInteractable == null)
                     return;
             }
         }
@@ -42,14 +42,14 @@ namespace Spyware
         {
             get
             {
-                return currentInteractableItem;
+                return currentInteractable;
             }
             set
             {
-                currentInteractableItem = value;
+                currentInteractable = value;
                 if (value != null)
                     ClosestInteractable = null;
-                currentInteractableItem = value;
+                currentInteractable = value;
             }
         }
 
@@ -86,23 +86,22 @@ namespace Spyware
         {
             if (Controller == null)
                 return;
-            Input.GripUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Grip);
-            Input.GripDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Grip);
-            Input.GripPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Grip);
-            Input.TriggerUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Trigger);
-            Input.TriggerDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
-            Input.TriggerPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Trigger);
+            Input.GripUp = Controller.GetPressUp(4UL);
+            Input.GripDown = Controller.GetPressDown(4UL);
+            Input.GripPress = Controller.GetPress(4UL);
+            Input.TriggerUp = Controller.GetPressUp(8589934592UL);
+            Input.TriggerDown = Controller.GetPressDown(8589934592UL);
+            Input.TriggerPress = Controller.GetPress(8589934592UL);
             Input.TriggerFloat = Controller.GetAxis(EVRButtonId.k_EButton_Axis1).x;
-            Input.MenuUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu);
-            Input.MenuDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu);
-            Input.MenuPress = Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu);
-            Input.TouchPadUp = Controller.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.TouchPadDown = Controller.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.TouchPadPress = Controller.GetPress(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.TouchPadTouchUp = Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.TouchPadTouchDown = Controller.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.TouchPadTouched = Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad);
-            Input.ApplicationMenuPress = Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu);
+            Input.MenuUp = Controller.GetPressUp(2UL);
+            Input.MenuDown = Controller.GetPressDown(2UL);
+            Input.MenuPress = Controller.GetPress(2UL);
+            Input.TouchPadUp = Controller.GetPressUp(4294967296UL);
+            Input.TouchPadDown = Controller.GetPressDown(4294967296UL);
+            Input.TouchPadPress = Controller.GetPress(4294967296UL);
+            Input.TouchPadTouchUp = Controller.GetTouchUp(4294967296UL);
+            Input.TouchPadTouchDown = Controller.GetTouchDown(4294967296UL);
+            Input.TouchPadTouched = Controller.GetTouch(4294967296UL);
             Input.TouchPadAxes = Controller.GetAxis(EVRButtonId.k_EButton_Axis0);
         }
 
@@ -114,54 +113,63 @@ namespace Spyware
             //If Controller handleing handgun is 0.15f away from other hand dampen the recoil
             //var distance = Vector3.Distance(this.transform.position, otherHand.transform.position);
 
-            if (ClosestInteractable != null || CurrentInteractable != null)
+            if (currentHandMode == HandMode.Idle)
             {
-
-                if (currentHandState == HandState.Empty)
+                switch (currentHandState)
                 {
-                    if (Input.TriggerDown && ClosestInteractable.interactionStyle == InteractionStyle.Hold)
-                    {
-                        CurrentInteractable = ClosestInteractable;
-                        currentHandState = HandState.Interacting;
-                        CurrentInteractable.BeginInteraction(this);
-                    }
+                    case HandState.Empty:
+                        if (Input.TriggerDown)
+                        {
+                            if (closestInteractable != null)
+                            {
+                                if (closestInteractable.IsSimpleInteract)
+                                {
+                                    closestInteractable.SimpleInteraction(this);
+                                }
+                                else
+                                {
+                                    CurrentInteractable = closestInteractable;
+                                    currentHandState = HandState.Interacting;
+                                    CurrentInteractable.BeginInteraction(this);
+                                }
 
-                    else if (Input.TriggerDown && ClosestInteractable.interactionStyle == InteractionStyle.Toggle)
-                    {
-                        CurrentInteractable = ClosestInteractable;
-                        currentHandState = HandState.Interacting;
-                        CurrentInteractable.BeginInteraction(this);
-                    }
-
-                    Controller.TriggerHapticPulse(150);
-
-                }
-
-                else if (currentHandState == HandState.Interacting)
-                {
-                    if (Input.TriggerUp && CurrentInteractable.interactionStyle == InteractionStyle.Hold)
-                    {
-                        CurrentInteractable.EndInteraction(this);
+                                Controller.TriggerHapticPulse(300);
+                            }
+                        }
+                        break;
+                    case HandState.Interacting:
+                        bool flag1 = false;
+                        if (CurrentInteractable != null)
+                        {
+                            if (CurrentInteractable.interactionStyle == InteractionStyle.Hold)
+                            {
+                                if (Input.TriggerUp)
+                                    flag1 = true;
+                            }
+                            else if (CurrentInteractable.interactionStyle == InteractionStyle.Toggle)
+                            {
+                                if (Input.GripPress)
+                                {
+                                    flag1 = true;
+                                }
+                            }
+                            if (flag1)
+                            {
+                                CurrentInteractable.EndInteraction(this);
+                                CurrentInteractable = null;
+                                currentHandState = HandState.Empty;
+                                break;
+                            }
+                            CurrentInteractable.UpdateInteraction(this);
+                            break;
+                        }
                         currentHandState = HandState.Empty;
-                        CurrentInteractable = null;
-                    }
-
-                    else if (Input.GripDown && CurrentInteractable.interactionStyle == InteractionStyle.Toggle)
-                    {
-                        CurrentInteractable.EndInteraction(this);
-                        currentHandState = HandState.Empty;
-                        CurrentInteractable = null;
-                    }
+                        break;
                 }
-
-                UpdateInputs();
-
-                if (CurrentInteractable == null)
-                {
-                    currentHandState = HandState.Empty;
-                }
-
             }
+
+            UpdateInputs();
+
         }
 
         private void Collider(Collider collider, bool isEnter)
@@ -213,6 +221,11 @@ namespace Spyware
         {
             Empty,
             Interacting,
+        }
+
+        public enum HandMode
+        {
+            Idle,
         }
     }
 }

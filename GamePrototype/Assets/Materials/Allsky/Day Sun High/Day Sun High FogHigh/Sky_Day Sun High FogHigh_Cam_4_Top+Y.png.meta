@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5308943b4e5904411894b7cfd8c9c004
+guid: 7ef8b641215a27f4589715daa3c77b05
 labels:
 - Sky
 - Skies
@@ -15,6 +15,8 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -30,10 +32,13 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 32
   textureSettings:
+    serializedVersion: 2
     filterMode: -1
     aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
@@ -73,6 +78,7 @@ TextureImporter:
     serializedVersion: 2
     sprites: []
     outline: []
+    physicsShape: []
   spritePackingTag: 
   userData: 
   assetBundleName: 
